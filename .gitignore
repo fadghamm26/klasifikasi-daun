@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+.venv/
+venv/
+
+# Model
+*.keras
+*.h5
+
+# VS Code
+.vscode/
+
+# Dataset
+dataset/

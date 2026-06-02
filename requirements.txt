@@ -1,0 +1,5 @@
+flask>=2.0
+flask-cors
+numpy
+pillow
+tensorflow-cpu>=2.10

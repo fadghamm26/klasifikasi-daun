@@ -1,0 +1,290 @@
+
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Prediksi Model Keras</title>
+		<style>
+			:root{
+				--bg:#000000; --card:transparent; --muted:#9ca3af; --accent:#2563eb; --accent-600:#1e40af;
+				--success:#16a34a; --danger:#dc2626;
+			}
+			*{box-sizing:border-box}
+			body { font-family: Inter, system-ui, Arial, sans-serif; background:var(--bg); color:#e5e7eb; margin:0; padding:1.5rem 1rem; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:100vh; }
+			.wrap{max-width:980px;margin:0 auto;width:100%}
+			header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;justify-content:center}
+			h1{font-size:1.4rem;margin:0;text-align:center;color:var(--accent);word-break:break-word}
+			p.lead{color:var(--muted);margin:0.25rem 0 1rem;text-align:center;font-size:0.95rem}
+
+			/* remove visible white card and center its inner content */
+			.card{background:var(--card);border-radius:0;padding:0;margin:0;box-shadow:none;width:100%;max-width:100%;margin-top:1rem}
+			.card > div{display:flex;flex-direction:column;align-items:center}
+			.actions{display:flex;gap:0.5rem;align-items:center;margin-top:0.75rem;justify-content:center;flex-wrap:wrap;max-width:100%}
+			input[type=file]{display:inline-block;font-size:0.9rem}
+
+			button, button.primary{background:linear-gradient(180deg,var(--accent),var(--accent-600));color:white;border:none;padding:0.5rem 0.75rem;border-radius:8px;cursor:pointer;font-size:0.9rem;white-space:nowrap}
+			button.primary:disabled{opacity:0.55;cursor:not-allowed}
+
+			/* Center preview image and limit its displayed size */
+			.preview{display:block;max-width:90vw;width:min(480px,90vw);height:auto;margin:0.75rem auto 0;border-radius:8px;border:0}
+
+			#result{margin-top:1rem;display:none}
+			.result-card{padding:0.75rem;border-radius:8px;background:transparent;border:0;color:var(--accent);font-size:0.95rem;max-width:100%;word-wrap:break-word}
+			.top-label{font-weight:600;font-size:1rem;margin-bottom:0.5rem}
+			.result-card ul{padding-left:1.25rem;margin:0.5rem 0}
+			.result-card li{padding:0.25rem 0;font-size:0.9rem}
+
+			.prob-list{list-style:none;padding:0;margin:0}
+			.prob-item{display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0;border-bottom:1px dashed rgba(15,23,42,0.04)}
+			.prob-bar{height:8px;background:#333;border-radius:999px;flex:1;margin:0 0.5rem;overflow:hidden;min-width:50px}
+			.prob-bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-600));}
+
+			.muted{color:var(--muted)}
+
+			.spinner{width:18px;height:18px;border-radius:50%;border:3px solid rgba(0,0,0,0.08);border-top-color:var(--accent);animation:spin 1s linear infinite;display:inline-block}
+			@keyframes spin{to{transform:rotate(360deg)}}
+
+			/* Mobile responsive: <= 480px */
+			@media (max-width:480px){
+				body{padding:1rem 0.75rem}
+				h1{font-size:1.2rem;margin-bottom:0.5rem}
+				p.lead{font-size:0.85rem;margin:0.2rem 0 0.75rem}
+				.card{margin-top:0.75rem}
+				.actions{gap:0.4rem;margin-top:0.5rem}
+				button, button.primary{padding:0.45rem 0.6rem;font-size:0.8rem}
+				#realtimeInterval{width:70px !important}
+				input[type=file]{font-size:0.8rem}
+				.result-card{padding:0.5rem;font-size:0.85rem}
+				.result-card li{font-size:0.8rem}
+				.preview{max-width:95vw;width:min(300px,95vw)}
+				video{max-width:95vw;width:min(300px,95vw) !important}
+			}
+
+			/* Tablet responsive: 481px - 1024px */
+			@media (max-width:1024px) and (min-width:481px){
+				body{padding:1.25rem 1rem}
+				h1{font-size:1.3rem}
+				p.lead{font-size:0.9rem}
+				.actions{gap:0.6rem;flex-wrap:wrap}
+				button, button.primary{padding:0.5rem 0.7rem;font-size:0.85rem}
+				.preview{max-width:85vw;width:min(400px,85vw)}
+				video{max-width:85vw;width:min(400px,85vw) !important}
+			}
+
+			/* Desktop: > 1024px */
+			@media (min-width:1025px){
+				body{padding:2rem 1rem}
+				h1{font-size:1.6rem}
+				.preview{max-width:480px;width:60%}
+				video{max-width:480px;width:60% !important}
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Klasifikasi penyakit tanaman</h1>
+		
+
+		<div class="card">
+			<div style="display:flex;flex-direction:column">
+				<div class="actions">
+					<input type="file" id="imageInput" accept="image/*" />
+					<button id="predictBtn" class="primary" disabled>Prediksi</button>
+					<div id="spinner" style="display:none;margin-left:6px" aria-hidden="true" class="spinner"></div>
+				</div>
+
+				<!-- Camera controls -->
+				<div class="actions" style="margin-top:0.6rem">
+					<button id="startCamBtn" class="primary" type="button">Mulai Kamera</button>
+					<button id="stopCamBtn" type="button" disabled style="border-radius:8px;padding:0.5rem 0.8rem">Berhenti</button>
+					<button id="captureBtn" type="button" disabled style="border-radius:8px;padding:0.5rem 0.8rem">Ambil Foto & Prediksi</button>
+					<button id="realtimeBtn" type="button" style="border-radius:8px;padding:0.5rem 0.8rem">Real-time: Off</button>
+					<label style="color:var(--muted);margin-left:8px;display:flex;align-items:center;gap:8px"><span style="font-size:0.85rem">Interval (ms)</span><input id="realtimeInterval" type="number" min="200" value="1000" style="width:90px;padding:6px;border-radius:6px;border:0;"/></label>
+				</div>
+
+				<!-- Live video preview (hidden until camera started) -->
+				<video id="videoStream" autoplay playsinline style="display:none;border-radius:8px;border:1px solid #e6eefb;margin-top:0.75rem;max-width:480px;width:60%;margin-left:auto;margin-right:auto"></video>
+				<canvas id="captureCanvas" style="display:none"></canvas>
+
+				<img id="imgPreview" class="preview" src="" alt="Preview" style="display:none;" />
+
+				<div id="result">
+					<div class="result-card" id="resultCard"></div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const imageInput = document.getElementById('imageInput');
+			const imgPreview = document.getElementById('imgPreview');
+			const predictBtn = document.getElementById('predictBtn');
+			const resultDiv = document.getElementById('result');
+
+			let selectedFile = null;
+
+			imageInput.addEventListener('change', (e) => {
+				const file = e.target.files[0];
+				if (!file) return;
+				selectedFile = file;
+				const url = URL.createObjectURL(file);
+				imgPreview.src = url;
+				imgPreview.style.display = 'block';
+				predictBtn.disabled = false;
+				resultDiv.style.display = 'none';
+			});
+
+			// Camera handling
+			const startCamBtn = document.getElementById('startCamBtn');
+			const stopCamBtn = document.getElementById('stopCamBtn');
+			const captureBtn = document.getElementById('captureBtn');
+			const video = document.getElementById('videoStream');
+			const canvas = document.getElementById('captureCanvas');
+			let stream = null;
+
+			startCamBtn.addEventListener('click', async () => {
+				try {
+					stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+					video.srcObject = stream;
+					video.style.display = 'block';
+					startCamBtn.disabled = true;
+					stopCamBtn.disabled = false;
+					captureBtn.disabled = false;
+				} catch (err) {
+					alert('Gagal mengakses kamera: ' + err.message);
+				}
+			});
+
+			stopCamBtn.addEventListener('click', () => {
+				if (stream) {
+					stream.getTracks().forEach(t => t.stop());
+					stream = null;
+				}
+				video.style.display = 'none';
+				startCamBtn.disabled = false;
+				stopCamBtn.disabled = true;
+				captureBtn.disabled = true;
+				// stop realtime if active
+				if (typeof realtimeTimer !== 'undefined' && realtimeTimer) {
+					clearInterval(realtimeTimer);
+					realtimeTimer = null;
+					realtimeActive = false;
+					const rb = document.getElementById('realtimeBtn');
+					if (rb) rb.textContent = 'Real-time: Off';
+				}
+			});
+
+			// capture button (manual)
+			  captureBtn.addEventListener('click', async () => {
+				if (!stream) return;
+				const w = video.videoWidth || 640;
+				const h = video.videoHeight || 480;
+				canvas.width = w;
+				canvas.height = h;
+				const ctx = canvas.getContext('2d');
+				ctx.drawImage(video, 0, 0, w, h);
+				canvas.toBlob(async (blob) => {
+					if (!blob) return;
+					selectedFile = new File([blob], 'camera.png', { type: 'image/png' });
+					const url = URL.createObjectURL(selectedFile);
+					imgPreview.src = url;
+					imgPreview.style.display = 'block';
+					await sendFileForPrediction(selectedFile, 'Mengirim frame dari kamera...');
+				});
+			});
+
+			// Real-time capture
+			const realtimeBtn = document.getElementById('realtimeBtn');
+			const realtimeIntervalInput = document.getElementById('realtimeInterval');
+			let realtimeActive = false;
+			let realtimeTimer = null;
+			let isPredicting = false;
+
+			realtimeBtn.addEventListener('click', () => {
+				if (!stream) {
+					alert('Kamera belum aktif. Klik "Mulai Kamera" dulu.');
+					return;
+				}
+				realtimeActive = !realtimeActive;
+				realtimeBtn.textContent = 'Real-time: ' + (realtimeActive ? 'On' : 'Off');
+				if (realtimeActive) {
+					// start interval
+					const ms = Math.max(200, parseInt(realtimeIntervalInput.value)||1000);
+					realtimeTimer = setInterval(async () => {
+						if (isPredicting) return; // avoid overlap
+						if (!stream) return;
+						isPredicting = true;
+						const w = video.videoWidth || 640;
+						const h = video.videoHeight || 480;
+						canvas.width = w;
+						canvas.height = h;
+						const ctx = canvas.getContext('2d');
+						ctx.drawImage(video, 0, 0, w, h);
+						canvas.toBlob(async (blob) => {
+							if (!blob) { isPredicting = false; return; }
+							const file = new File([blob], 'camera_rt.png', { type: 'image/png' });
+							// show preview but don't change selectedFile
+							imgPreview.src = URL.createObjectURL(file);
+							imgPreview.style.display = 'block';
+							try {
+								await sendFileForPrediction(file, 'Mengirim frame real-time...', true);
+							} finally {
+								isPredicting = false;
+							}
+						});
+					}, ms);
+				} else {
+					clearInterval(realtimeTimer);
+					realtimeTimer = null;
+				}
+			});
+
+			// helper: send file to /predict and display result
+			async function sendFileForPrediction(file, statusMessage, suppressSpinner=false) {
+				if (!file) return;
+				if (!suppressSpinner) document.getElementById('spinner').style.display = 'inline-block';
+				predictBtn.disabled = true;
+				resultDiv.style.display = 'block';
+				resultDiv.textContent = statusMessage || 'Mengirim ke server...';
+				const form = new FormData();
+				form.append('image', file);
+				try {
+					const resp = await fetch('/predict', { method: 'POST', body: form });
+					if (!resp.ok) throw new Error('HTTP ' + resp.status);
+					const data = await resp.json();
+					if (data.top_label) {
+						let html = `<strong>Prediksi:</strong> ${data.top_label} (index ${data.top_index})`;
+						if (data.label_probabilities) {
+							html += '<br><br><strong>Probabilitas per label:</strong><ul>';
+							for (const [label, p] of Object.entries(data.label_probabilities)) {
+								html += `<li>${label}: ${(p*100).toFixed(2)}%</li>`;
+							}
+							html += '</ul>';
+						} else {
+							html += `<pre>${JSON.stringify(data.predictions, null, 2)}</pre>`;
+						}
+						resultDiv.innerHTML = html;
+					} else {
+						resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+					}
+				} catch (err) {
+					resultDiv.textContent = 'Error: ' + err.message;
+				} finally {
+					predictBtn.disabled = false;
+					if (!suppressSpinner) document.getElementById('spinner').style.display = 'none';
+				}
+			}
+
+			// predict button for uploaded file
+			predictBtn.addEventListener('click', async () => {
+				if (!selectedFile) {
+					resultDiv.style.display = 'block';
+					resultDiv.textContent = 'Belum ada file yang dipilih.';
+					return;
+				}
+				await sendFileForPrediction(selectedFile, 'Mengirim file...');
+			});
+
+			// end of script: close tags below
+			</script>
+	</body>
+</html>
