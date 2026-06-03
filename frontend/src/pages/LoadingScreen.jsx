@@ -13,6 +13,7 @@ const loadingSteps = [
 
 export default function LoadingScreen() {
   const [progress, setProgress] = useState(0)
+  const [exiting, setExiting] = useState(false)
   const navigate = useNavigate()
   const hasStarted = useRef(false)
 
@@ -25,7 +26,10 @@ export default function LoadingScreen() {
 
     function animateStep() {
       if (stepIndex >= loadingSteps.length) {
-        setTimeout(() => navigate('/home'), 300)
+        setTimeout(() => {
+          setExiting(true)
+          setTimeout(() => navigate('/home'), 600)
+        }, 300)
         return
       }
 
@@ -58,14 +62,15 @@ export default function LoadingScreen() {
 
     // Safety redirect
     const safetyTimer = setTimeout(() => {
-      navigate('/home')
+      setExiting(true)
+      setTimeout(() => navigate('/home'), 600)
     }, 5000)
 
     return () => clearTimeout(safetyTimer)
   }, [navigate])
 
   return (
-    <div style={{
+    <div className={`loading-screen-container${exiting ? ' exiting' : ''}`} style={{
       width: '100vw',
       height: '100vh',
       position: 'relative',
