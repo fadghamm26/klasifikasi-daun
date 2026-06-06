@@ -5,7 +5,7 @@ export default function Navbar() {
     <header className="navbar">
       <span className="navbar-brand">AgroScan AI</span>
       <nav className="navbar-links">
-        <Link to="/home">Dashboard</Link>
+        <Link to="/dashboard">Dashboard</Link>
         <Link to="/home">Diagnostic</Link>
         <Link to="/about">About</Link>
       </nav>

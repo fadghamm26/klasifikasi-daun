@@ -28,7 +28,7 @@ export default function LoadingScreen() {
       if (stepIndex >= loadingSteps.length) {
         setTimeout(() => {
           setExiting(true)
-          setTimeout(() => navigate('/home'), 600)
+          setTimeout(() => navigate('/dashboard'), 600)
         }, 300)
         return
       }
@@ -63,7 +63,7 @@ export default function LoadingScreen() {
     // Safety redirect
     const safetyTimer = setTimeout(() => {
       setExiting(true)
-      setTimeout(() => navigate('/home'), 600)
+      setTimeout(() => navigate('/dashboard'), 600)
     }, 5000)
 
     return () => clearTimeout(safetyTimer)
