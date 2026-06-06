@@ -34,7 +34,7 @@ export default function Sidebar() {
             <path d="M12 16v-4"/>
             <path d="M12 8h.01"/>
           </svg>
-          About
+          Tutorial
         </NavLink>
       </nav>
     </aside>

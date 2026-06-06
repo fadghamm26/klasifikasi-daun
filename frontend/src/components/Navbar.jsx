@@ -7,7 +7,7 @@ export default function Navbar() {
       <nav className="navbar-links">
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/home">Diagnostic</Link>
-        <Link to="/about">About</Link>
+        <Link to="/about">Turtorial</Link>
       </nav>
     </header>
   )

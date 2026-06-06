@@ -14,9 +14,11 @@ export default function DashboardPage() {
   return (
     <div className="app">
       <Sidebar />
-      <div className="main page-enter">
+      <div className="main">
         <Navbar />
+        <div className="page-enter">
         <DashboardSection onStartDiagnosis={handleStartDiagnosis} />
+        </div>
         <footer className="footer">
           <p>&copy; 2026 AgroScan Technologies &bull; AI-Powered Botanical Security</p>
         </footer>

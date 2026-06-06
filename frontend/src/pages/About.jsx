@@ -31,9 +31,10 @@ export default function About() {
   return (
     <div className="app">
       <Sidebar />
-      <div className="main page-enter">
+      <div className="main">
         <Navbar />
 
+        <div className="page-enter">
         <div className="content">
           <div className="about-content">
             <h1 className="about-title about-anim about-anim--1">Tentang AgroScan AI</h1>
@@ -97,6 +98,7 @@ export default function About() {
               <li>Lihat diagnosis dan tingkat kepercayaan hasil prediksi</li>
             </ol>
           </div>
+        </div>
         </div>
 
         <footer className="footer">

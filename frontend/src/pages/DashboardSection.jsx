@@ -1,18 +1,21 @@
+import dashBg from '../assets/pict.svg'
+import yaImg from '../assets/ya.png'
+
 export default function DashboardSection({ onStartDiagnosis }) {
   return (
     <div className="dashboard-section">
       {/* Hero */}
-      <div className="dashboard-hero">
+      <div className="dashboard-hero" style={{ backgroundImage: `url(${dashBg})` }}>
         <div className="dashboard-hero-content">
           <h1 className="dashboard-hero-title">
-            Ketahui penyakit pada daun tanamanmu
+            Ketahui penyakit pada daun tanamanmu dengan
           </h1>
-          <h2 className="dashboard-hero-highlight">dengan AgroScan AI</h2>
+          <h2 className="dashboard-hero-highlight">AgroScan AI</h2>
           <p className="dashboard-hero-desc">
             AgroScan AI mendeteksi jenis penyakit yang di alami daun pada tanaman
             anda, memastikan agar daun pada tanaman anda tetap terjaga.
           </p>
-          <a href="/home" className="dashboard-hero-btn" onClick={onStartDiagnosis}>
+          <a href="#diagnostic" className="dashboard-hero-btn" onClick={onStartDiagnosis}>
             Start Diagnosis
           </a>
         </div>
@@ -89,7 +92,7 @@ export default function DashboardSection({ onStartDiagnosis }) {
               </p>
             </div>
             <div className="dashboard-feature-image">
-              <img src="https://placehold.co/359x202" alt="Intelligent Capture" />
+              <img src={yaImg} alt="Intelligent Capture" />
             </div>
           </div>
 
@@ -129,7 +132,7 @@ export default function DashboardSection({ onStartDiagnosis }) {
           </div>
 
           {/* 04 */}
-          <div className="dashboard-feature-card dashboard-feature-card--light dashboard-feature-card--horizontal">
+          <div className="dashboard-feature-card dashboard-feature-card--light">
             <div className="dashboard-feature-chart">
               <div className="dashboard-chart-bars">
                 <div className="dashboard-chart-bar" style={{ height: '48%' }} />

@@ -62,9 +62,10 @@ export default function Home() {
     <ErrorBoundary>
       <div className="app">
         <Sidebar />
-        <div className="main page-enter">
+        <div className="main">
           <Navbar />
 
+          <div className="page-enter">
           <div className="content">
             <div className="content-left">
               <h1 className="page-title">Leaf Diagnostic Center</h1>
@@ -118,6 +119,7 @@ export default function Home() {
                 loading={loading}
               />
             </div>
+          </div>
           </div>
 
           <footer className="footer">
