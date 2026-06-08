@@ -1,6 +1,4 @@
 import { useRef } from 'react'
-import Sidebar from '../components/Sidebar'
-import Navbar from '../components/Navbar'
 
 function RippleCard({ children, className }) {
   const ref = useRef(null)
@@ -29,12 +27,8 @@ function RippleCard({ children, className }) {
 
 export default function About() {
   return (
-    <div className="app">
-      <Sidebar />
-      <div className="main">
-        <Navbar />
-
-        <div className="page-enter">
+    <>
+      <div className="page-enter">
         <div className="content">
           <div className="about-content">
             <h1 className="about-title about-anim about-anim--1">Tentang AgroScan AI</h1>
@@ -99,12 +93,11 @@ export default function About() {
             </ol>
           </div>
         </div>
-        </div>
-
-        <footer className="footer">
-          <p>&copy; 2026 AgroScan Technologies &bull; AI-Powered Botanical Security</p>
-        </footer>
       </div>
-    </div>
+
+      <footer className="footer">
+        <p>&copy; 2026 AgroScan Technologies &bull; AI-Powered Botanical Security</p>
+      </footer>
+    </>
   )
 }

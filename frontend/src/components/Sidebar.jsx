@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom'
 import VectorImg from '../assets/Vector.png'
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen }) {
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar${isOpen ? '' : ' sidebar--closed'}`}>
       <div className="sidebar-header">
         <div className="logo-icon">
           <img src={VectorImg} alt="Logo" />
@@ -19,14 +19,14 @@ export default function Sidebar() {
             <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
             <polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
-          Dashboard
+          <span className="sidebar-nav-text">Dashboard</span>
         </NavLink>
         <NavLink to="/home" className={({ isActive }) => isActive ? 'active' : ''}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8"/>
             <path d="M21 21l-4.35-4.35"/>
           </svg>
-          Diagnostic
+          <span className="sidebar-nav-text">Diagnostic</span>
         </NavLink>
         <NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -34,7 +34,7 @@ export default function Sidebar() {
             <path d="M12 16v-4"/>
             <path d="M12 8h.01"/>
           </svg>
-          Tutorial
+          <span className="sidebar-nav-text">About</span>
         </NavLink>
       </nav>
     </aside>
