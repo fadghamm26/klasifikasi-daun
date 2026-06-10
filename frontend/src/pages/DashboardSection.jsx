@@ -24,21 +24,23 @@ export default function DashboardSection({ onStartDiagnosis }) {
       {/* About */}
       <div className="dashboard-about">
         <div className="dashboard-about-inner">
-          <h2 className="dashboard-about-title">AgroScan AI</h2>
-          <p className="dashboard-about-text">
-            AgroScan AI adalah aplikasi berbasis kecerdasan buatan yang dirancang
-            untuk membantu petani dan peneliti dalam mendeteksi penyakit pada
-            tanaman secara cepat dan akurat. Dengan menggunakan model deep
-            learning yang telah dilatih pada ribuan gambar daun, sistem ini dapat
-            mengidentifikasi berbagai jenis penyakit tanaman.
-          </p>
-          <p className="dashboard-about-text">
-            Aplikasi ini menggunakan teknologi Convolutional Neural Network (CNN)
-            untuk menganalisis gambar daun dan memberikan diagnosis berdasarkan
-            pola visual yang terdeteksi. Model AI kami dapat mengklasifikasikan
-            daun ke dalam tiga kategori: Sehat, Embun Tepung (Powdery Mildew),
-            dan Karat Daun (Leaf Rust).
-          </p>
+          <div className="dashboard-about-text-wrap">
+            <h2 className="dashboard-about-title">AgroScan AI</h2>
+            <p className="dashboard-about-text">
+              AgroScan AI adalah aplikasi berbasis kecerdasan buatan yang dirancang
+              untuk membantu petani dan peneliti dalam mendeteksi penyakit pada
+              tanaman secara cepat dan akurat. Dengan menggunakan model deep
+              learning yang telah dilatih pada ribuan gambar daun, sistem ini dapat
+              mengidentifikasi berbagai jenis penyakit tanaman.
+            </p>
+            <p className="dashboard-about-text">
+              Aplikasi ini menggunakan teknologi Convolutional Neural Network (CNN)
+              untuk menganalisis gambar daun dan memberikan diagnosis berdasarkan
+              pola visual yang terdeteksi. Model AI kami dapat mengklasifikasikan
+              daun ke dalam tiga kategori: Sehat, Embun Tepung (Powdery Mildew),
+              dan Karat Daun (Leaf Rust).
+            </p>
+          </div>
 
           {/* Stats */}
           <div className="dashboard-stats">

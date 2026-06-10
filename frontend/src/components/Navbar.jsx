@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom'
-
 export default function Navbar({ sidebarOpen, onToggleSidebar }) {
   return (
     <header className="navbar">
@@ -20,11 +18,6 @@ export default function Navbar({ sidebarOpen, onToggleSidebar }) {
         </svg>
       </button>
       <span className="navbar-brand">AgroScan AI</span>
-      <nav className="navbar-links">
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/home">Diagnostic</Link>
-        <Link to="/about">About</Link>
-      </nav>
     </header>
   )
 }
